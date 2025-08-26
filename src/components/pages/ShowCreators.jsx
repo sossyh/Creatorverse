@@ -1,55 +1,51 @@
 // src/pages/ShowCreators.jsx
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { supabase } from "../../client";
-import Card from "../Card";
+import CreatorCard from "../CreatorCard";
+import { Link } from "react-router-dom";
+import bgImage from "../../assets/background.jpg"; // import the image
+import "./ShowCreators.css"; // CSS file
 
 export default function ShowCreators() {
   const [creators, setCreators] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchCreators = async () => {
-      try {
-        const { data, error } = await supabase.from("creators").select("*");
-        if (error) throw error;
-        setCreators(data);
-      } catch (error) {
-        console.error(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCreators();
+    async function fetchCreators() {
+      const { data } = await supabase.from("creators").select("*");
+      setCreators(data);
+    }
+    fetchCreators(); // fetch immediately
   }, []);
 
-  if (loading) return <p className="p-6">Loading creators...</p>;
-
   return (
-    <div className="p-6">
-      <button
-        onClick={() => navigate("/new")}
-        className="bg-blue-500 text-white px-4 py-2 rounded mb-4 hover:bg-blue-600"
-      >
-        Add Content Creator
-      </button>
+    <div
+      className="container"
+      style={{
+        background: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${bgImage}) center/cover no-repeat`,
+      }}
+    >
+      <h1 className="title">CREATORVERSE</h1>
 
-      {creators.length === 0 ? (
-        <p>No creators found. Add some creators to see them here!</p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {creators.map((creator) => (
-            <Card
-              key={creator.id}
-              creator={creator}
-              onView={() => navigate(`/creator/${creator.id}`)}
-              onEdit={() => navigate(`/edit/${creator.id}`)}
-              onDelete={() => console.log("Delete", creator.id)}
-            />
-          ))}
-        </div>
-      )}
+      <div className="buttonContainer">
+        <Link to="/creators" className="button">
+          View All Creators
+        </Link>
+        <Link to="/AddCreator" className="button">
+          Add a Creator
+        </Link>
+      </div>
+<div className="footerLine"></div>
+      <div className="grid">
+        {creators.length > 0 ? (
+          creators.map((creator) => (
+            <CreatorCard key={creator.id} creator={creator} />
+          ))
+        ) : (
+          <p className="noCreators">NO CREATORS YET</p>
+        )}
+      </div>
+
+      
     </div>
   );
 }

@@ -1,77 +1,123 @@
-// src/components/pages/AddCreator.jsx
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "../../client";
+// src/pages/AddCreator.jsx
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import DeleteModal from '../pages/DeleteModal';
+import './AddCreator.css';
 
-export default function AddCreator() {
-  const [name, setName] = useState("");
-  const [url, setUrl] = useState("");
-  const [description, setDescription] = useState("");
-  const [imageurl, setImageURL] = useState("");
-  const [loading, setLoading] = useState(false);
-
+const AddCreator = () => {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    imageURL: '',
+    url: ''
+  });
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
+    // Handle form submission logic here
+    console.log('Form submitted:', formData);
+    // After submission, navigate back to creators list
+    navigate('/creators');
+  };
 
-    try {
-      const { data, error } = await supabase.from("creators").insert([
-        { name, url, description, imageurl }
-      ]);
+  const handleDeleteClick = () => {
+    setShowDeleteModal(true);
+  };
 
-      if (error) throw error;
-      navigate("/"); // go back to main page
-    } catch (error) {
-      console.error("Error adding creator:", error.message);
-    } finally {
-      setLoading(false);
-    }
+  const handleCancelDelete = () => {
+    setShowDeleteModal(false);
+  };
+
+  const handleConfirmDelete = () => {
+    // Handle delete logic here
+    console.log('Delete confirmed');
+    setShowDeleteModal(false);
+    navigate('/creators');
   };
 
   return (
-    <div className="max-w-xl mx-auto p-6 border rounded shadow">
-      <h1 className="text-2xl font-bold mb-4">Add Content Creator</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-          className="border px-3 py-2 rounded"
-        />
-        <input
-          type="url"
-          placeholder="URL"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          required
-          className="border px-3 py-2 rounded"
-        />
-        <textarea
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-          className="border px-3 py-2 rounded"
-        />
-        <input
-          type="url"
-          placeholder="Image URL (optional)"
-          value={imageurl}
-          onChange={(e) => setImageURL(e.target.value)}
-          className="border px-3 py-2 rounded"
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          {loading ? "Adding..." : "Add Creator"}
-        </button>
-      </form>
+    <div className="add-creator-container">
+      <div className="add-creator-card">
+        <h1 className="add-creator-title">Add New Creator</h1>
+        
+        <form onSubmit={handleSubmit} className="add-creator-form">
+          <div className="form-section">
+            <label className="form-label">Name</label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="form-input"
+              placeholder="Enter creator's name"
+              required
+            />
+          </div>
+
+          <div className="form-section">
+            <label className="form-label">Description</label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="form-textarea"
+              placeholder="Enter a brief description"
+              rows="3"
+              required
+            />
+          </div>
+
+          <div className="form-section">
+            <label className="form-label">Image URL</label>
+            <input
+              type="url"
+              name="imageURL"
+              value={formData.imageURL}
+              onChange={handleChange}
+              className="form-input"
+              placeholder="Enter image URL"
+              required
+            />
+          </div>
+
+          <div className="form-section">
+            <label className="form-label">URL</label>
+            <input
+              type="url"
+              name="url"
+              value={formData.url}
+              onChange={handleChange}
+              className="form-input"
+              placeholder="Enter website or social media URL"
+              required
+            />
+          </div>
+
+          <div className="form-buttons">
+            <button type="submit" className="submit-button">SUBMIT</button>
+            <button type="button" onClick={handleDeleteClick} className="delete-button">DELETE</button>
+          </div>
+        </form>
+      </div>
+
+      <DeleteModal
+        isOpen={showDeleteModal}
+        onClose={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+        creatorName={formData.name || "this creator"}
+      />
     </div>
   );
-}
+};
+
+export default AddCreator;

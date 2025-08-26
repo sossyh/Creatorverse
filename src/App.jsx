@@ -11,7 +11,7 @@ function App() {
   // Define routes
   const routes = useRoutes([
     { path: "/", element: <ShowCreators /> },            // Main page
-  { path: "/new", element: <AddCreator /> }, // <-- This must exist
+  { path: "/AddCreator", element: <AddCreator /> }, // <-- This must exist
     { path: "/edit/:id", element: <EditCreator /> },     // Edit creator by ID
     { path: "/creator/:id", element: <ViewCreator /> },  // View single creator
   ]);
