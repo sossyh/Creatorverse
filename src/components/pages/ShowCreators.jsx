@@ -21,10 +21,13 @@ export default function ShowCreators() {
     <div
       className="container"
       style={{
-        background: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${bgImage}) center/cover no-repeat`,
+        background: `linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.9))`,
       }}
     >
-      <h1 className="title">CREATORVERSE</h1>
+      <div className="topGradient" style={{
+        background: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${bgImage}) center/cover no-repeat`,
+      }}>
+      <h1 className="title"  >CREATORVERSE</h1>
 
       <div className="buttonContainer">
         <Link to="/creators" className="button">
@@ -33,7 +36,7 @@ export default function ShowCreators() {
         <Link to="/AddCreator" className="button">
           Add a Creator
         </Link>
-      </div>
+      </div></div>
 <div className="footerLine"></div>
       <div className="grid">
         {creators.length > 0 ? (
@@ -41,7 +44,7 @@ export default function ShowCreators() {
             <CreatorCard key={creator.id} creator={creator} />
           ))
         ) : (
-          <p className="noCreators">NO CREATORS YET</p>
+          <p className="noCreators">No Creators Yet 😞</p>
         )}
       </div>
 
