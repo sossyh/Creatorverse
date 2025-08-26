@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DeleteModal from '../pages/DeleteModal';
+import { supabase } from '../../client'; // ✅ import supabase client
 import './AddCreator.css';
 
 const AddCreator = () => {
@@ -22,27 +23,39 @@ const AddCreator = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log('Form submitted:', formData);
-    // After submission, navigate back to creators list
-    navigate('/creators');
+
+    try {
+      // ✅ Insert into Supabase table
+      const { data, error } = await supabase
+        .from('creators')
+        .insert([
+          {
+            name: formData.name,
+            description: formData.description,
+            imageurl: formData.imageURL, // ✅ match column name in Supabase
+            url: formData.url
+          }
+        ]);
+
+      if (error) throw error;
+
+      console.log('✅ Creator added:', data);
+      navigate('/'); // redirect to creators list or homepage
+    } catch (err) {
+      console.error('❌ Error inserting data:', err.message);
+      alert('Failed to add creator: ' + err.message);
+    }
   };
 
-  const handleDeleteClick = () => {
-    setShowDeleteModal(true);
-  };
-
-  const handleCancelDelete = () => {
-    setShowDeleteModal(false);
-  };
+  const handleDeleteClick = () => setShowDeleteModal(true);
+  const handleCancelDelete = () => setShowDeleteModal(false);
 
   const handleConfirmDelete = () => {
-    // Handle delete logic here
     console.log('Delete confirmed');
     setShowDeleteModal(false);
-    navigate('/creators');
+    navigate('/');
   };
 
   return (

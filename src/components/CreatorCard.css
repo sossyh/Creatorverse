@@ -1,61 +1,126 @@
 /* CreatorCard.css */
+
 .creator-card {
-  max-width: 500px;
-  margin: 2rem auto;
-  padding: 2.5rem;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-  color: #333;
+  margin-top: 40px;
+  margin-left: 40px;
+  margin-right: 40px;
   position: relative;
+  width: 500px; /* Fixed width */
+  height: 450px;
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0; /* Prevents cards from shrinking */
+}
+
+
+.card-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.5s ease;
+}
+
+.creator-card:hover .card-background {
+  transform: scale(1.05);
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.7));
+}
+
+.card-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 30px;
+  color: white;
 }
 
 .creator-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1.5rem;
-  position: relative;
 }
 
 .creator-header h1 {
   margin: 0;
-  font-size: 2rem;
-  font-weight: 600;
+  font-size: 32px;
+  font-weight: 700;
   letter-spacing: 0.5px;
-  color: #000;
-  text-transform: uppercase;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  max-width: 80%;
 }
 
 .edit-icon {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   cursor: pointer;
-  opacity: 0.6;
-  transition: opacity 0.2s ease;
+  opacity: 0.8;
+  transition: all 0.2s;
+  filter: invert(1);
 }
 
 .edit-icon:hover {
   opacity: 1;
+  transform: scale(1.1);
+}
+
+.creator-bio {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 8px;
+  backdrop-filter: blur(5px);
 }
 
 .creator-bio p {
   margin: 0;
-  font-size: 1.05rem;
   line-height: 1.6;
-  color: #555;
-  text-align: left;
+  font-size: 16px;
+}
+
+/* Container for the cards */
+.creator-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
 /* Responsive design */
-@media (max-width: 600px) {
+@media (max-width: 1100px) {
   .creator-card {
-    margin: 1.5rem;
-    padding: 2rem 1.5rem;
+    max-width: 45%;
+    height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .creator-cards-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
   }
   
-  .creator-header h1 {
-    font-size: 1.7rem;
+  .creator-card {
+    max-width: 90%;
+    height: 380px;
+    margin: 0;
   }
 }
