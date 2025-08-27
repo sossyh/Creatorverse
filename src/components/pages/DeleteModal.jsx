@@ -1,4 +1,3 @@
-// src/components/DeleteModal.jsx
 import './DeleteModal.css';
 
 const DeleteModal = ({ isOpen, onClose, onConfirm, creatorName }) => {

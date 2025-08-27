@@ -38,7 +38,11 @@
   bottom: 0;
   padding: 20px;
   width: 100%;
-  z-index: 2;
+  z-index: 3; /* higher than overlay */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* spacing between header, icons, description */
 }
 
 .card-header {
@@ -53,23 +57,42 @@
   font-weight: 700;
 }
 
-.edit-icon {
-  width: 20px;
-  height: 20px;
+.action-icons {
+  display: flex;
+  gap: 10px; /* space between edit and delete icons */
+}
+
+.edit-icon,
+.delete-icon {
+  font-size: 22px;
   cursor: pointer;
-  filter: invert(1);
+  color: white;
+  transition: color 0.3s;
+}
+
+.edit-icon:hover {
+  color: #ffcc00; /* yellow hover for edit */
+}
+
+.delete-icon:hover {
+  color: #ff4d4d; /* red hover for delete */
 }
 
 .social-icons {
-  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap; /* wrap if too many icons */
 }
 
-.social-icons img {
-  width: 24px;
-  height: 24px;
-  margin-right: 8px;
-  cursor: pointer;
-  filter: invert(1);
+.social-icons a {
+  font-size: 24px;
+  color: white;
+  transition: color 0.3s;
+}
+
+.social-icons a:hover {
+  color: #ff4d4d; /* hover effect for all social icons */
 }
 
 .creator-description {
