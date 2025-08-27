@@ -15,7 +15,11 @@ export default function ShowCreators() {
   useEffect(() => {
     async function fetchCreators() {
       const { data, error } = await supabase.from("creators").select("*");
-      if (!error) setCreators(data);
+      if (error) {
+        console.error("Error fetching creators:", error.message);
+      } else {
+        setCreators(data);
+      }
     }
     fetchCreators();
   }, []);
@@ -34,17 +38,20 @@ export default function ShowCreators() {
   const handleConfirmDelete = async () => {
     if (!selectedCreator?.id) return;
 
-    console.log("Deleting creator with ID:", selectedCreator.id);
+    const creatorId = Number(selectedCreator.id); // Ensure it's a number if id is bigint
+    console.log("Deleting creator with ID:", creatorId);
 
     const { error } = await supabase
       .from("creators")
       .delete()
-      .eq("id", selectedCreator.id);
+      .eq("id", creatorId);
 
     if (!error) {
-      setCreators(creators.filter(c => c.id !== selectedCreator.id));
+      // Remove from UI
+      setCreators(creators.filter(c => Number(c.id) !== creatorId));
       setModalOpen(false);
       setSelectedCreator(null);
+      console.log("Creator deleted successfully");
     } else {
       console.error("Error deleting creator:", error.message);
     }

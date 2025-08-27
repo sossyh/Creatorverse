@@ -7,6 +7,7 @@ const CreatorCard = ({ creator, onEdit, onDeleteClick }) => {
     ? `url(${creator.backgroundImage})`
     : `url(${fallbackBackground})`;
 
+
   return (
     <div className="creator-card">
       <div className="card-background" style={{ backgroundImage }}>
@@ -18,6 +19,7 @@ const CreatorCard = ({ creator, onEdit, onDeleteClick }) => {
           <h2>{creator.name}</h2>
           <div className="action-icons">
             <FaEdit className="edit-icon" onClick={() => onEdit?.(creator.id)} />
+              
             <FaTrash className="delete-icon" onClick={() => onDeleteClick?.(creator)} />
           </div>
         </div>
